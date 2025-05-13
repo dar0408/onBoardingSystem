@@ -1,15 +1,19 @@
 package com.bridgelabz.onboarding.config;
 
 import org.springframework.data.domain.AuditorAware;
-import org.springframework.stereotype.Component;
-
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.Optional;
 
-@Component("auditorAware")
 public class AuditorAwareImpl implements AuditorAware<String> {
 
     @Override
     public Optional<String> getCurrentAuditor() {
-        return Optional.of("system_user");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return Optional.of("system"); // or Optional.empty()
+        }
+        return Optional.ofNullable(authentication.getName());
     }
 }
