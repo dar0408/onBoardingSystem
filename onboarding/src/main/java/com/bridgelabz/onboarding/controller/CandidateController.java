@@ -18,7 +18,6 @@ public class CandidateController {
 
     private final CandidateService service;
 
-    // Get all or filtered by status
     @GetMapping
     public ResponseEntity<ResponseDTO<List<CandidateDTO>>> getByStatus(@RequestParam(required = false) String status) {
         try {
@@ -32,7 +31,6 @@ public class CandidateController {
         }
     }
 
-    // Create new candidate
     @PostMapping
     public ResponseEntity<ResponseDTO<CandidateDTO>> create(@Valid @RequestBody CandidateDTO dto) {
         try {
@@ -45,8 +43,6 @@ public class CandidateController {
         }
     }
 
-
-    // Get candidate by ID
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO<CandidateDTO>> getById(@PathVariable Long id) {
         try {
@@ -58,7 +54,6 @@ public class CandidateController {
         }
     }
 
-    // Count by status
     @GetMapping("/status/count")
     public ResponseEntity<ResponseDTO<Long>> countByStatus(@RequestParam String status) {
         try {
@@ -70,7 +65,6 @@ public class CandidateController {
         }
     }
 
-    // Update candidate status
     @PutMapping("/{id}/status")
     public ResponseEntity<ResponseDTO<String>> updateStatus(@PathVariable Long id, @RequestParam String status) {
         try {
@@ -82,7 +76,6 @@ public class CandidateController {
         }
     }
 
-    // Notify job offer
     @GetMapping("/{id}/notify-offer")
     public ResponseEntity<ResponseDTO<String>> notifyOffer(@PathVariable Long id) {
         try {
@@ -93,7 +86,4 @@ public class CandidateController {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
 }

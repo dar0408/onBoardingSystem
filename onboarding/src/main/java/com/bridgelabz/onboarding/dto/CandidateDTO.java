@@ -1,7 +1,6 @@
 package com.bridgelabz.onboarding.dto;
 
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Data

@@ -7,10 +7,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AuthDTO {
-    private String username;
-    private String password;
-    @Email
-    @NotBlank
+public class ResetPasswordRequest {
+    @Email @NotBlank
     private String email;
+    @NotBlank
+    private String otp;
+    @NotBlank
+    private String newPassword;
 }

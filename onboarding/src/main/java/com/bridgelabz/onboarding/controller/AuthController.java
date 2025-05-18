@@ -1,6 +1,7 @@
 package com.bridgelabz.onboarding.controller;
 
 import com.bridgelabz.onboarding.service.JwtUserDetailsService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
@@ -11,7 +12,6 @@ import com.bridgelabz.onboarding.entity.*;
 import com.bridgelabz.onboarding.repository.*;
 import com.bridgelabz.onboarding.config.JwtUtil;
 
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -23,16 +23,23 @@ public class AuthController {
     @Autowired private RoleRepository roleRepo;
     @Autowired private PasswordEncoder encoder;
 
+
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterDTO dto) {
-        AppUser u = new AppUser();
-        u.setUsername(dto.getUsername());
-        u.setPassword(encoder.encode(dto.getPassword()));
-        var role = roleRepo.findByName("ROLE_HR")
-                .orElseThrow(() -> new RuntimeException("Role not found"));
-        u.setRoles(Set.of(role));
-        userRepo.save(u);
-        return ResponseEntity.ok("User registered");
+    public ResponseEntity<String> register(@Valid @RequestBody AuthDTO dto) {
+        if (userRepo.existsByUsername(dto.getUsername())) {
+            return ResponseEntity.badRequest().body("Username already taken");
+        }
+        if (userRepo.existsByEmail(dto.getEmail())) {
+            return ResponseEntity.badRequest().body("Email already registered");
+        }
+
+        AppUser user = new AppUser();
+        user.setUsername(dto.getUsername());
+        user.setPassword(encoder.encode(dto.getPassword()));
+        user.setEmail(dto.getEmail());               // ← don’t forget this
+        userRepo.save(user);
+
+        return ResponseEntity.ok("User registered successfully");
     }
 
     @PostMapping("/login")
@@ -43,4 +50,6 @@ public class AuthController {
         String token = jwtUtil.generateToken((org.springframework.security.core.userdetails.User)userDetails);
         return ResponseEntity.ok(new JwtResponse(token));
     }
+
+
 }

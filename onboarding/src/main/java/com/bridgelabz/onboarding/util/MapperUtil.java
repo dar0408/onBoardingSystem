@@ -42,6 +42,10 @@ public class MapperUtil {
                 .address(p.getAddress())
                 .fatherName(p.getFatherName())
                 .motherName(p.getMotherName())
+                .createdBy(p.getCreatedBy())
+                .createdDate(p.getCreatedDate())
+                .lastModifiedBy(p.getLastModifiedBy())
+                .lastModifiedDate(p.getLastModifiedDate())
                 .build();
     }
 
@@ -61,6 +65,10 @@ public class MapperUtil {
                 .bankName(b.getBankName())
                 .accountNumber(b.getAccountNumber())
                 .ifscCode(b.getIfscCode())
+                .createdBy(b.getCreatedBy())
+                .createdDate(b.getCreatedDate())
+                .lastModifiedBy(b.getLastModifiedBy())
+                .lastModifiedDate(b.getLastModifiedDate())
                 .build();
     }
 
@@ -80,6 +88,10 @@ public class MapperUtil {
                 .highestDegree(e.getHighestDegree())
                 .university(e.getUniversity())
                 .percentage(e.getPercentage())
+                .createdBy(e.getCreatedBy())
+                .createdDate(e.getCreatedDate())
+                .lastModifiedBy(e.getLastModifiedBy())
+                .lastModifiedDate(e.getLastModifiedDate())
                 .build();
     }
 
@@ -100,6 +112,10 @@ public class MapperUtil {
                 .fileName(d.getFileName())
                 .fileType(d.getFileType())
                 .verified(d.isVerified())
+                .createdBy(d.getCreatedBy())
+                .createdDate(d.getCreatedDate())
+                .lastModifiedBy(d.getLastModifiedBy())
+                .lastModifiedDate(d.getLastModifiedDate())
                 .build();
     }
 
@@ -108,7 +124,7 @@ public class MapperUtil {
                 .id(d.getId())
                 .candidateId(d.getCandidateId())
                 .fileName(d.getFileName())
-                .fileType(null) // fileType/path set elsewhere when uploading
+                .fileType(null)
                 .filePath(null)
                 .verified(d.isVerified())
                 .build();

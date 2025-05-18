@@ -11,10 +11,16 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="password_reset_tokens")
 public class PasswordResetToken {
-    @Id
-    @GeneratedValue private Long id;
-    private String email;
+    @Id @GeneratedValue
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "app_user_id", nullable = false)
+    private AppUser appUser;
+
+    @Column(nullable = false, length = 6)
     private String otp;
+
+    @Column(nullable = false)
     private LocalDateTime expiresAt;
-    // getters/setters
 }

@@ -1,6 +1,7 @@
 package com.bridgelabz.onboarding.dto;
 
 import lombok.*;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -11,4 +12,8 @@ public class BankInfoDTO {
     private String bankName;
     private String accountNumber;
     private String ifscCode;
+    private String createdBy;
+    private LocalDateTime createdDate;
+    private String lastModifiedBy;
+    private LocalDateTime lastModifiedDate;
 }

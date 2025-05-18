@@ -1,23 +1,9 @@
 package com.bridgelabz.onboarding.util;
 
-import com.bridgelabz.onboarding.dto.CandidateDTO;
 import com.bridgelabz.onboarding.entity.Candidate;
-
 import java.time.format.DateTimeFormatter;
 
 public class EmailTemplateUtil {
-    public static CandidateDTO toDTO(Candidate c) {
-        return CandidateDTO.builder()
-                .id(c.getId())
-                .firstName(c.getFirstName())
-                .lastName(c.getLastName())
-                .email(c.getEmail())
-                .phone(c.getPhone())
-                .status(c.getStatus())
-                .appliedDate(c.getAppliedDate())
-                .onboardedDate(c.getOnboardedDate())
-                .build();
-    }
 
     public static String buildJobOfferHtml(Candidate c) {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

@@ -13,14 +13,12 @@ import java.util.stream.Collectors;
 @Component
 public class JwtUtil {
 
-    // Base64-encoded key from application.properties
     @Value("${jwt.secret}")
     private String base64Secret;
 
     @Value("${jwt.expiration}")
     private long expirationMs;
 
-    // Decode once and reuse
     private SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(base64Secret);
         return Keys.hmacShaKeyFor(keyBytes);

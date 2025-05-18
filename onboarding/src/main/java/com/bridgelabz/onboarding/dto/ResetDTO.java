@@ -9,5 +9,4 @@ public class ResetDTO {
     private String email;
     private String otp;
     private String newPassword;
-    // getters/setters
 }

@@ -29,7 +29,7 @@ public class CandidateServiceImpl implements CandidateService {
     public List<CandidateDTO> getAllCandidates() {
         return repository.findAll()
                 .stream()
-                .map(EmailTemplateUtil::toDTO)
+                .map(MapperUtil::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -37,7 +37,7 @@ public class CandidateServiceImpl implements CandidateService {
     public List<CandidateDTO> getCandidatesByStatus(String status) {
         return repository.findByStatus(status)
                 .stream()
-                .map(EmailTemplateUtil::toDTO)
+                .map(MapperUtil::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -45,7 +45,7 @@ public class CandidateServiceImpl implements CandidateService {
     public CandidateDTO getCandidateById(Long id) {
         Candidate c = repository.findById(id)
                 .orElseThrow(() -> new CandidateNotFoundException(id));
-        return EmailTemplateUtil.toDTO(c);
+        return MapperUtil.toDTO(c);
     }
 
     @Override

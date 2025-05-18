@@ -1,6 +1,5 @@
 package com.bridgelabz.onboarding.entity;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -16,6 +15,6 @@ public class Role {
     @Id
     @GeneratedValue
     private Long id;
-    private String name; // e.g. "ROLE_HR"
-    // getters/setters
+    private String name;
+
 }
