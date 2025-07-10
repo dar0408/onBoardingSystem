@@ -1,12 +1,14 @@
 package com.bridgelabz.onboarding.controller;
 
 import com.bridgelabz.onboarding.dto.ResetDTO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.bridgelabz.onboarding.service.PasswordService;
 
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/api/forgot-password")
 public class ForgotPasswordController {
     @Autowired

@@ -1,5 +1,7 @@
 package com.bridgelabz.onboarding.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
@@ -7,7 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import com.bridgelabz.onboarding.service.PdfReportService;
 import java.io.ByteArrayInputStream;
 
+@Hidden
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/api/reports")
 @RequiredArgsConstructor
 public class ReportController {

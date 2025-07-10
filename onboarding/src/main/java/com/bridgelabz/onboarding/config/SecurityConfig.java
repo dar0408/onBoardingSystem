@@ -27,28 +27,37 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // ✅ Swagger-related endpoints
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/webjars/**"
+                        ).permitAll()
+
+                        // ✅ Public endpoints
                         .requestMatchers("/api/auth/**", "/api/forgot-password/**").permitAll()
-                        // allow anyone with HR or ADMIN role to touch all v1 endpoints:
-                        .requestMatchers("/api/v1/**").hasAnyRole("HR","ADMIN")
-                        // and your admin‐only endpoints, if any, could stay under /api/admin/**:
+
+                        // ✅ Secured endpoints
+                        .requestMatchers("/api/v1/**").hasAnyRole("HR", "ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authConfig) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 
     @Bean
-    public FilterRegistrationBean<JwtRequestFilter> jwtFilterRegistration(
-            JwtRequestFilter filter) {
-        FilterRegistrationBean<JwtRequestFilter> registration =
-                new FilterRegistrationBean<>(filter);
+    public FilterRegistrationBean<JwtRequestFilter> jwtFilterRegistration(JwtRequestFilter filter) {
+        FilterRegistrationBean<JwtRequestFilter> registration = new FilterRegistrationBean<>(filter);
         registration.setEnabled(false);
         return registration;
     }

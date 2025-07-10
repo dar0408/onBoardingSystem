@@ -3,6 +3,7 @@ package com.bridgelabz.onboarding.controller;
 import com.bridgelabz.onboarding.dto.EducationalInfoDTO;
 import com.bridgelabz.onboarding.dto.ResponseDTO;
 import com.bridgelabz.onboarding.service.EducationalInfoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/api/candidates/{id}/educational-info")
 @RequiredArgsConstructor
 @Validated
