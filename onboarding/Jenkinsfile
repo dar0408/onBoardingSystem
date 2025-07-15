@@ -6,43 +6,34 @@ pipeline {
     }
 
     stages {
-
-		stage('Checkout Code') {
+		stage('Checkout') {
 			steps {
-				git 'https://github.com/dar0408/onBoardingSystem.git'
+				git url: 'https://github.com/dar0408/onBoardingSystem.git', branch: 'main'
             }
         }
 
-        stage('Clean Previous Containers') {
+        stage('Docker Compose Build') {
 			steps {
 				script {
 					sh 'docker-compose down --volumes --remove-orphans'
+                    sh 'docker-compose build'
                 }
             }
         }
 
-        stage('Build and Start Containers') {
+        stage('Run App with Docker Compose') {
 			steps {
 				script {
-					sh 'docker-compose up -d --build'
+					sh 'docker-compose up -d'
                 }
             }
         }
 
-        stage('Wait & Health Check') {
+        stage('Health Check') {
 			steps {
 				script {
-					echo 'Waiting for services to boot up...'
-                    sleep 25
+					sleep(time: 20, unit: 'SECONDS')
                     sh 'curl -f http://localhost:8080/actuator/health || exit 1'
-                }
-            }
-        }
-
-        stage('Show Logs (Optional)') {
-			steps {
-				script {
-					sh 'docker-compose logs --tail=20 app'
                 }
             }
         }
@@ -50,7 +41,8 @@ pipeline {
 
     post {
 		always {
-			echo 'Build Finished. Use docker ps and docker-compose logs if needed.'
+			echo 'Build pipeline finished.'
+            sh 'docker-compose ps'
         }
     }
 }
