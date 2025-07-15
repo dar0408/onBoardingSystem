@@ -1,48 +1,31 @@
 pipeline {
 	agent any
 
-    environment {
-		COMPOSE_PROJECT_NAME = 'onboarding'
-    }
-
     stages {
-		stage('Checkout') {
+		stage('Docker Compose Build') {
 			steps {
-				git url: 'https://github.com/dar0408/onBoardingSystem.git', branch: 'main'
-            }
-        }
-
-        stage('Docker Compose Build') {
-			steps {
-				script {
-					bat 'docker-compose down --volumes --remove-orphans'
-                    bat 'docker-compose build'
-                }
+				bat 'cd onboarding && docker-compose down --volumes --remove-orphans'
+                bat 'cd onboarding && docker-compose build'
             }
         }
 
         stage('Run App with Docker Compose') {
 			steps {
-				script {
-					bat 'docker-compose up -d'
-                }
+				bat 'cd onboarding && docker-compose up -d --force-recreate'
             }
         }
 
         stage('Health Check') {
 			steps {
-				script {
-					sleep(time: 20, unit: 'SECONDS')
-                    bat 'curl -f http://localhost:8080/actuator/health || exit 1'
-                }
+				bat 'curl http://localhost:8080/actuator/health'
             }
         }
     }
 
     post {
 		always {
-			echo 'Build pipeline finished.'
-            bat 'docker-compose ps'
+			bat 'cd onboarding && docker-compose ps'
+            echo 'Build pipeline finished.'
         }
     }
 }
