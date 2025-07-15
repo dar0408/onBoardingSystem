@@ -3,17 +3,14 @@ package com.bridgelabz.onboarding.controller;
 import com.bridgelabz.onboarding.dto.DocumentDTO;
 import com.bridgelabz.onboarding.dto.ResponseDTO;
 import com.bridgelabz.onboarding.service.DocumentService;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
-@Hidden
 @RestController
 @SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/api/candidates/{id}/documents")

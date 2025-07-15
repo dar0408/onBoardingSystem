@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import com.bridgelabz.onboarding.service.PasswordService;
 
 @RestController
-@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/api/forgot-password")
 public class ForgotPasswordController {
     @Autowired

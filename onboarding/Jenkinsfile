@@ -1,0 +1,56 @@
+pipeline {
+	agent any
+
+    environment {
+		COMPOSE_PROJECT_NAME = 'onboarding'
+    }
+
+    stages {
+
+		stage('Checkout Code') {
+			steps {
+				git 'https://github.com/dar0408/onBoardingSystem.git'
+            }
+        }
+
+        stage('Clean Previous Containers') {
+			steps {
+				script {
+					sh 'docker-compose down --volumes --remove-orphans'
+                }
+            }
+        }
+
+        stage('Build and Start Containers') {
+			steps {
+				script {
+					sh 'docker-compose up -d --build'
+                }
+            }
+        }
+
+        stage('Wait & Health Check') {
+			steps {
+				script {
+					echo 'Waiting for services to boot up...'
+                    sleep 25
+                    sh 'curl -f http://localhost:8080/actuator/health || exit 1'
+                }
+            }
+        }
+
+        stage('Show Logs (Optional)') {
+			steps {
+				script {
+					sh 'docker-compose logs --tail=20 app'
+                }
+            }
+        }
+    }
+
+    post {
+		always {
+			echo 'Build Finished. Use docker ps and docker-compose logs if needed.'
+        }
+    }
+}

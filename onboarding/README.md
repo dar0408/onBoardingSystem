@@ -1,3 +1,4 @@
+
 # 🚀 Candidate Onboarding System
 
 A robust Spring Boot backend system for managing candidate onboarding, role-based access, OTP-based registration via email using **Kafka + Redis**, and asynchronous offer notifications via **RabbitMQ** — all containerized using **Docker & Docker Compose**.
@@ -13,6 +14,8 @@ A robust Spring Boot backend system for managing candidate onboarding, role-base
 - [📦 API Endpoints](#-api-endpoints)
 - [🐳 Docker Setup](#-docker-setup)
 - [📬 Email Configuration](#-email-configuration)
+- [🧪 Swagger Setup](#-swagger-setup)
+- [🔄 CI/CD - Jenkins Pipeline](#-cicd---jenkins-pipeline)
 - [🔮 Future Scope](#-future-scope)
 - [🤝 Author](#-author)
 
@@ -53,6 +56,8 @@ A robust Spring Boot backend system for managing candidate onboarding, role-base
 | Caching             | Redis                          |
 | ORM / DB            | Spring Data JPA + MySQL        |
 | Containerization    | Docker, Docker Compose         |
+| CI/CD               | Jenkins                        |
+| Documentation       | Swagger / OpenAPI              |
 
 ---
 
@@ -191,10 +196,53 @@ Use a **Gmail App Password**, not your real Gmail password.
 
 ---
 
+## 🧪 Swagger Setup
+
+- Swagger UI: `http://localhost:8080/swagger-ui/index.html`
+- Uses annotations like `@Operation`, `@SecurityRequirement`, `@Tag`
+
+```java
+@SecurityRequirement(name = "bearerAuth")
+@Tag(name = "Candidate APIs", description = "Manage onboarding candidates")
+```
+
+---
+
+## 🔄 CI/CD - Jenkins Pipeline
+
+### 📁 Jenkinsfile
+
+```groovy
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh './mvnw clean package -DskipTests'
+            }
+        }
+        stage('Docker Build & Push') {
+            steps {
+                sh 'docker build -t your-dockerhub-username/onboarding-app .'
+                sh 'docker push your-dockerhub-username/onboarding-app'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'docker-compose down'
+                sh 'docker-compose up -d'
+            }
+        }
+    }
+}
+```
+
+> Make sure Jenkins has access to Docker and proper credentials set up.
+
+---
+
 ## 🔮 Future Scope
 
-- 🔄 Kafka consumer for login OTPs
-- 📑 Swagger / OpenAPI Docs
 - 🧱 Convert to Microservices
 - 🔐 Role-based endpoint protection
 - 🚀 Render/Railway/GitHub Actions deployment
@@ -211,4 +259,4 @@ Use a **Gmail App Password**, not your real Gmail password.
 
 ---
 
-> Built with ❤️ by Darpan using Spring Boot, Kafka, Redis, RabbitMQ, MySQL, and Docker.
+> Built with ❤️ by Darpan using Spring Boot, Kafka, Redis, RabbitMQ, MySQL, Swagger, and Docker.

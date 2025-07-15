@@ -12,7 +12,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import com.bridgelabz.onboarding.service.JwtUserDetailsService;
-
 import java.io.IOException;
 
 @Component
@@ -37,6 +36,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
+                // Validate the token with user details
                 if (jwtUtil.validateToken(jwt, (org.springframework.security.core.userdetails.User) userDetails)) {
                     var authToken = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());
@@ -49,13 +49,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         chain.doFilter(req, res);
     }
 
-    // ✅ This tells Spring to skip JWT validation for Swagger-related endpoints
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
         return path.startsWith("/v3/api-docs")
                 || path.startsWith("/swagger-ui")
                 || path.startsWith("/swagger-resources")
-                || path.startsWith("/webjars");
+                || path.startsWith("/webjars")
+                || path.startsWith("/api/auth")
+                || path.startsWith("/api/forgot-password");
     }
 }
