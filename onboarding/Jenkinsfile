@@ -21,7 +21,23 @@ pipeline {
 
         stage('Health Check') {
 			steps {
-				bat 'curl http://localhost:8080/actuator/health'
+				script {
+					def retries = 10
+                    def delay = 5
+                    for (int i = 0; i < retries; i++) {
+						def result = bat(script: 'curl -s -o nul -w "%{http_code}" http://localhost:8080/actuator/health', returnStdout: true).trim()
+                        if (result == "200") {
+							echo "✅ Health check passed"
+                            break
+                        } else {
+							echo "❌ Health check failed with status: ${result}, retrying in ${delay}s..."
+                            sleep time: delay, unit: 'SECONDS'
+                        }
+                        if (i == retries - 1) {
+							error "❌ Health check failed after ${retries} attempts"
+                        }
+                    }
+                }
             }
         }
     }
